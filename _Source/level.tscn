@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://oaeitchafmg6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ck052"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_u1gsp"]
+sky_material = SubResource("ProceduralSkyMaterial_ck052")
+
+[sub_resource type="Environment" id="Environment_5pyvi"]
+background_mode = 2
+sky = SubResource("Sky_u1gsp")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vas0w"]
+albedo_color = Color(1, 0.533333, 0.407843, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5uqbm"]
+albedo_color = Color(0, 0.6, 0.407843, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0hg3t"]
+albedo_color = Color(0.976471, 0.184314, 0.392157, 1)
+
+[node name="LEVEL" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5pyvi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+
+[node name="FLOOR" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -2, 2.08165e-12)
+size = Vector3(30, 4, 5)
+material = SubResource("StandardMaterial3D_vas0w")
+
+[node name="launchpad" type="CSGBox3D" parent="."]
+transform = Transform3D(0.759944, 0, 0, 0, 1, 0, 0, 0, 0.813138, -12.2962, -1.38702, 2.08165e-12)
+use_collision = true
+size = Vector3(5.50983, 4, 5)
+material = SubResource("StandardMaterial3D_5uqbm")
+
+[node name="landing" type="CSGBox3D" parent="."]
+transform = Transform3D(0.759944, 0, 0, 0, 1, 0, 0, 0, 0.813138, 11.5312, -1.38702, 2.08165e-12)
+use_collision = true
+size = Vector3(5.50983, 4, 5)
+material = SubResource("StandardMaterial3D_0hg3t")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 8.61, 21.373)
