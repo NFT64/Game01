@@ -24,7 +24,35 @@ func _process(delta: float) -> void:
 		if rocket_audio.playing == false:
 			rocket_audio.play()
 	else:
+		booster_particles.emitting = false
+		rocket_audio.stop()
+
+	if Input.is_action_pressed( "rotate_left"):
+		apply_torque(Vector3(0.0, 0.0, torque_thrust * delta))
+		right_booster_particles.emitting = true
+	else:
+		right_booster_particles.emitting = false
+		
+		
+	if Input.is_action_pressed( "rotate_right"):
+		apply_torque(Vector3(0.0, 0.0, -torque_thrust * delta))
+		left_booster_particles.emitting = true
+	else:
+		left_booster_particles.emitting = false
+		
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
+
+
+func _physics_process(delta: float) -> void:
+	# Move your input/force logic here
+	if Input.is_action_pressed("boost"):
+		apply_central_force(basis.y * delta * thrust)
 		booster_particles.emitting = true
+		if rocket_audio.playing == false:
+			rocket_audio.play()
+	else:
+		booster_particles.emitting = false
 		rocket_audio.stop()
 
 	if Input.is_action_pressed( "rotate_left"):
