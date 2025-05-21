@@ -16,9 +16,11 @@ var is_transitioning: bool = false
 @onready var success_particles: GPUParticles3D = $SuccessParticles
 
 
+var thrusting: bool = false
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if Input.is_action_pressed("boost"):
+	if Input.is_action_pressed("boost") or thrusting:
 		apply_central_force(basis.y * delta * thrust)
 		booster_particles.emitting = true
 		if rocket_audio.playing == false:
@@ -44,12 +46,16 @@ func _process(delta: float) -> void:
 		get_tree().quit()
 
 
+func is_boosting() -> bool:
+	return Input.is_action_pressed("boost") or thrusting
+
 func _physics_process(delta: float) -> void:
-	# Move your input/force logic here
-	if Input.is_action_pressed("boost"):
+	if is_transitioning:
+		return
+	if is_boosting():
 		apply_central_force(basis.y * delta * thrust)
 		booster_particles.emitting = true
-		if rocket_audio.playing == false:
+		if not rocket_audio.playing:
 			rocket_audio.play()
 	else:
 		booster_particles.emitting = false
@@ -74,11 +80,11 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node) -> void:
 	if is_transitioning ==  false:
-		if "Goal" in body.get_groups():
+		if body.is_in_group("Goal"):
 			print ("You Win")
 			complete_level(body.file_path)
 
-		if "Hazard" in body.get_groups():
+		elif body.is_in_group("Hazard"):
 			crash_sequence()
 		
 
@@ -101,3 +107,12 @@ func complete_level(next_level_file: String) -> void:
 	var tween = create_tween()
 	tween.tween_interval(1.0)
 	tween.tween_callback(get_tree().change_scene_to_file.bind(next_level_file))
+
+
+func _on_ThrustButton_button_down() -> void:
+	print("Button down!")
+	thrusting = true
+
+func _on_ThrustButton_button_up() -> void:
+	print("Button up!")
+	thrusting = false
