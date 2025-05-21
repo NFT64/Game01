@@ -42,3 +42,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 7.6, 13.413)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2155, 1.70468, 0)
 
 [node name="FLOOR3" parent="." instance=ExtResource("3_13ije")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ThrustButton" type="Button" parent="CanvasLayer"]
+offset_left = 789.0
+offset_top = 572.0
+offset_right = 924.0
+offset_bottom = 647.0
+text = "THRUST"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="button_down" from="CanvasLayer/ThrustButton" to="Player" method="_on_ThrustButton_button_down"]
+[connection signal="button_up" from="CanvasLayer/ThrustButton" to="Player" method="_on_ThrustButton_button_up"]
